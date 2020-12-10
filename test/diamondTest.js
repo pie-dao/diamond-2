@@ -64,6 +64,19 @@ contract('DiamondTest', async (accounts) => {
     web3.eth.defaultAccount = accounts[0]
   })
 
+  it('should only be able to initialize once', async() => {
+    let error;
+
+    try {
+      const diamondCut = [[DiamondCutFacet.address, FacetCutAction.Add, getSelectors(DiamondCutFacet)]]
+      await diamond.initialize(diamondCut, accounts[0])
+    } catch(e) {
+      error = e.reason;
+    }
+
+    assert.equal(error, 'ALREADY_INITIALIZED');
+  })
+
   it('should have three facets -- call to facetAddresses function', async () => {
     addresses = await diamondLoupeFacet.methods.facetAddresses().call()
     // console.log(addresses)

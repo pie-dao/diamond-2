@@ -9,13 +9,16 @@ pragma experimental ABIEncoderV2;
 /******************************************************************************/
 
 import "./libraries/LibDiamond.sol";
+import "./libraries/LibDiamondInitialize.sol";
 import "./interfaces/IDiamondLoupe.sol";
 import "./interfaces/IDiamondCut.sol";
 import "./interfaces/IERC173.sol";
 import "./interfaces/IERC165.sol";
 
 contract Diamond {
-    constructor(IDiamondCut.FacetCut[] memory _diamondCut, address _owner) payable {
+    function initialize(IDiamondCut.FacetCut[] memory _diamondCut, address _owner) external payable {
+        require(LibDiamondInitialize.diamondInitializeStorage().initialized == false, "ALREADY_INITIALIZED");
+        LibDiamondInitialize.diamondInitializeStorage().initialized = true;
         LibDiamond.diamondCut(_diamondCut, address(0), new bytes(0));
         LibDiamond.setContractOwner(_owner);
 

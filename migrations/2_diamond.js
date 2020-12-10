@@ -32,12 +32,13 @@ module.exports = function (deployer, network, accounts) {
 
   deployer.deploy(DiamondCutFacet)
   deployer.deploy(DiamondLoupeFacet)
-  deployer.deploy(OwnershipFacet).then(() => {
+  deployer.deploy(OwnershipFacet).then(async () => {
     const diamondCut = [
       [DiamondCutFacet.address, FacetCutAction.Add, getSelectors(DiamondCutFacet)],
       [DiamondLoupeFacet.address, FacetCutAction.Add, getSelectors(DiamondLoupeFacet)],
       [OwnershipFacet.address, FacetCutAction.Add, getSelectors(OwnershipFacet)]
     ]
-    return deployer.deploy(Diamond, diamondCut, accounts[0])
+    const diamond = await deployer.deploy(Diamond);
+    diamond.initialize(diamondCut, accounts[0]);
   })
 }
