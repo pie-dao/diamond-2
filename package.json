@@ -1,7 +1,7 @@
 {
-  "name": "diamond-2",
+  "name": "@piedao/diamond",
   "version": "1.3.3",
-  "description": "Gas-optimized diamond for adding/replacing/removing functions.",
+  "description": "Initialiseable fork of diamond-2 by Nick Mudge",
   "main": "index.js",
   "scripts": {
     "prettier": "prettier --write contracts/**/*.sol",
